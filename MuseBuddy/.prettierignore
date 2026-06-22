@@ -1,0 +1,7 @@
+.expo
+android
+assets/expo.icon
+dist
+ios
+node_modules
+pnpm-lock.yaml

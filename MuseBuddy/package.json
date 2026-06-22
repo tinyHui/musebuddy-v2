@@ -2,10 +2,12 @@
   "name": "musebuddy",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "packageManager": "pnpm@11.5.2",
   "dependencies": {
     "@expo/ui": "~56.0.18",
     "expo": "~56.0.12",
     "expo-constants": "~56.0.18",
+    "expo-dev-client": "~56.0.20",
     "expo-device": "~56.0.4",
     "expo-font": "~56.0.7",
     "expo-glass-effect": "~56.0.4",
@@ -29,15 +31,26 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
+    "eslint": "^9.39.4",
+    "eslint-config-expo": "^56.0.4",
+    "prettier": "^3.8.4",
     "typescript": "~6.0.3"
   },
   "scripts": {
-    "start": "expo start",
+    "build": "expo prebuild --platform ios",
+    "start": "expo start --dev-client",
+    "start:dev-client": "expo start --dev-client",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "ios:device": "expo run:ios --device",
+    "prebuild:ios": "expo prebuild --platform ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck"
   },
   "private": true
 }

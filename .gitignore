@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Editors and IDEs
+.idea/
+*.swp
+*.swo
+
+# Local tooling and caches
+.pnpm-store/
+.turbo/
+.cache/
+coverage/
+
+# Logs
+*.log
+pnpm-debug.log*
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
