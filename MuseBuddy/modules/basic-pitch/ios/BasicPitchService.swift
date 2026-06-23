@@ -454,13 +454,6 @@ final class BasicPitchService: @unchecked Sendable {
         }
       }
 
-      guard !samples.isEmpty else {
-        return []
-      }
-      let peak = samples.reduce(Float(0)) { max($0, abs($1)) }
-      if peak > 0 {
-        samples = samples.map { $0 / peak }
-      }
       return samples
     } catch let error as BasicPitchError {
       throw error
@@ -556,12 +549,11 @@ final class BasicPitchService: @unchecked Sendable {
     frameCount: Int,
     pitchCount: Int
   ) -> [Float] {
-    let strides = array.strides.map(\.intValue)
     var values = [Float]()
     values.reserveCapacity(frameCount * pitchCount)
     for frame in startFrame..<(startFrame + frameCount) {
       for pitch in 0..<pitchCount {
-        let offset = frame * strides[1] + pitch * strides[2]
+        let offset = frame * pitchCount + pitch
         values.append(array[offset].floatValue)
       }
     }

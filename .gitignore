@@ -21,3 +21,6 @@ pnpm-debug.log*
 .env.*
 !.env.example
 
+# demo
+try-demo/
+demo/
