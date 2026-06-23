@@ -12,7 +12,7 @@ MuseBuddy is an Expo/React Native iOS app for piano transcription. The initial p
 Keep the first version focused. Do not add accounts, cloud processing, recording history, MIDI export, or elaborate visual design unless the task explicitly requires them.
 
 The app currently targets Expo SDK 56. Check the matching versioned Expo documentation before changing Expo APIs or native integration:
-https://docs.expo.dev/versions/v56.0.0/
+<https://docs.expo.dev/versions/v56.0.0/>
 
 ## Development Client Requirement
 
@@ -65,6 +65,13 @@ use the `@/` TypeScript alias for imports from `MuseBuddy/src/`.
 Do not edit generated native projects as the source of truth. Native configuration should
 live in `MuseBuddy/app.json`, config plugins, or local Expo modules so it survives
 `expo prebuild`.
+
+## Specialized References
+
+Consult the relevant file in `.agents/references/` before changing an area it covers:
+
+- `basic-pitch-coreml.md`: Basic Pitch model conversion, Core ML integration, audio
+  preprocessing, inference, and note decoding.
 
 ## Package and Command Policy
 
@@ -120,8 +127,19 @@ Use `pnpm --dir MuseBuddy check` from the repository root, or `pnpm check` from
 `MuseBuddy/`, to run all required checks together. Run `pnpm format` from `MuseBuddy/`
 first when formatting needs correction.
 
-For changes to Swift, Core ML resources, app configuration, or local Expo modules, also
-regenerate/build the iOS development project from `MuseBuddy/` using `pnpm build` and
-verify it compiles.
+For changes to Swift, Core ML resources, app configuration, or local Expo modules, report
+that the developer must regenerate/build the iOS development project from `MuseBuddy/`
+using `pnpm build` and verify it compiles.
 
 Do not consider work complete while an applicable check is failing. If a check cannot run, report the exact blocker and the checks that remain unverified.
+
+## Developer-Run Runtime Testing
+
+After finishing code changes, do not launch or trigger an iOS simulator, physical-device
+run, Metro debug session, or interactive debug workflow. Do not run commands such as
+`pnpm build`, `pnpm start`, `expo run:ios`, or other commands that install, launch, or
+attach to the app.
+
+The developer will build, launch, and perform simulator/device testing. Agents should run
+the non-interactive static checks (`pnpm format:check`, `pnpm lint`, and `pnpm typecheck`)
+and clearly report that runtime and native build verification remain for the developer.
