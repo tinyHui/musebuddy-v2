@@ -33,10 +33,12 @@
     "@types/react": "~19.2.2",
     "eslint": "^9.39.4",
     "eslint-config-expo": "^56.0.4",
+    "husky": "^9.1.7",
     "prettier": "^3.8.4",
     "typescript": "~6.0.3"
   },
   "scripts": {
+    "prepare": "husky",
     "compile:basic-pitch-model": "bash ./scripts/compile-basic-pitch-model.sh",
     "build": "pnpm compile:basic-pitch-model && expo prebuild --platform ios",
     "start": "expo start --dev-client",
@@ -49,10 +51,14 @@
     "web": "expo start --web",
     "diagnose:basic-pitch": "bash ./scripts/diagnose-basic-pitch.sh",
     "lint": "expo lint",
+    "lint:swift": "swiftlint --config .swiftlint.yml modules/basic-pitch/ios",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
+    "format:swift": "swiftformat modules/basic-pitch/ios --config .swiftformat",
     "format:check": "prettier --check .",
-    "check": "pnpm format:check && pnpm lint && pnpm typecheck"
+    "format:swift:check": "swiftformat modules/basic-pitch/ios --config .swiftformat --lint",
+    "precommit": "pnpm format && pnpm format:swift && git update-index --again && pnpm lint && pnpm lint:swift && pnpm typecheck",
+    "check": "pnpm format:check && pnpm format:swift:check && pnpm lint && pnpm lint:swift && pnpm typecheck"
   },
   "private": true
 }

@@ -22,7 +22,7 @@ public final class BasicPitchModule: Module {
       self.service.onRecordingFinished = nil
     }
 
-    AsyncFunction("initialize") { () async throws -> Void in
+    AsyncFunction("initialize") { () async throws in
       do {
         try await self.service.initialize()
       } catch let error as BasicPitchError {
@@ -30,7 +30,7 @@ public final class BasicPitchModule: Module {
       }
     }
 
-    AsyncFunction("startRecording") { () async throws -> Void in
+    AsyncFunction("startRecording") { () async throws in
       do {
         try await self.service.startRecording()
       } catch let error as BasicPitchError {
@@ -54,7 +54,7 @@ public final class BasicPitchModule: Module {
       }
     }
 
-    AsyncFunction("cancelRecording") { () async throws -> Void in
+    AsyncFunction("cancelRecording") { () async throws in
       do {
         try await self.service.cancelRecording()
       } catch let error as BasicPitchError {

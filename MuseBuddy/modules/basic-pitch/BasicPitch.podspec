@@ -21,6 +21,7 @@ Pod::Spec.new do |s|
 
   source_model = "ios/Resources/nmp.mlpackage"
   compiled_model = "ios/Resources/nmp.mlmodelc"
+  compiled_model_bin = "#{compiled_model}/coremldata.bin"
 
   s.prepare_command = <<-CMD
     set -eu
@@ -28,6 +29,11 @@ Pod::Spec.new do |s|
     if [ ! -d "#{source_model}" ]; then
       echo "error: Missing Basic Pitch source model at #{source_model}" >&2
       exit 1
+    fi
+
+    if [ -f "#{compiled_model_bin}" ]; then
+      echo "Basic Pitch model already compiled at #{compiled_model}"
+      exit 0
     fi
 
     rm -rf "#{compiled_model}"

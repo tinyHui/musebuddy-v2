@@ -1,0 +1,12 @@
+--swiftversion 5.9
+--disable wrapMultilineStatementBraces
+--exclude ios
+--exclude node_modules
+--exclude .expo
+--exclude .husky
+--exclude .git
+--indent 2
+--allman false
+--decimal-grouping 3,4
+--semicolons never
+--trimwhitespace always

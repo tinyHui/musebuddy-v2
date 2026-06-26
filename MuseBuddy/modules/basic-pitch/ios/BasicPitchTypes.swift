@@ -15,50 +15,50 @@ enum BasicPitchError: Error {
   var code: String {
     switch self {
     case .modelResourceMissing:
-      return "ERR_MODEL_RESOURCE_MISSING"
+      "ERR_MODEL_RESOURCE_MISSING"
     case .modelLoadFailed:
-      return "ERR_MODEL_LOAD_FAILED"
+      "ERR_MODEL_LOAD_FAILED"
     case .modelValidationFailed:
-      return "ERR_MODEL_VALIDATION_FAILED"
+      "ERR_MODEL_VALIDATION_FAILED"
     case .microphonePermissionDenied:
-      return "ERR_MICROPHONE_PERMISSION_DENIED"
+      "ERR_MICROPHONE_PERMISSION_DENIED"
     case .recordingAlreadyActive:
-      return "ERR_RECORDING_ALREADY_ACTIVE"
+      "ERR_RECORDING_ALREADY_ACTIVE"
     case .recordingNotActive:
-      return "ERR_RECORDING_NOT_ACTIVE"
+      "ERR_RECORDING_NOT_ACTIVE"
     case .audioSessionInterrupted:
-      return "ERR_AUDIO_SESSION_INTERRUPTED"
+      "ERR_AUDIO_SESSION_INTERRUPTED"
     case .audioConversionFailed:
-      return "ERR_AUDIO_CONVERSION_FAILED"
+      "ERR_AUDIO_CONVERSION_FAILED"
     case .inferenceFailed:
-      return "ERR_INFERENCE_FAILED"
+      "ERR_INFERENCE_FAILED"
     case .transcriptionAlreadyRunning:
-      return "ERR_TRANSCRIPTION_ALREADY_RUNNING"
+      "ERR_TRANSCRIPTION_ALREADY_RUNNING"
     }
   }
 
   var message: String {
     switch self {
     case .modelResourceMissing:
-      return "The bundled Basic Pitch model could not be found."
-    case .modelLoadFailed(let detail):
-      return "The Basic Pitch model could not be loaded: \(detail)"
-    case .modelValidationFailed(let detail):
-      return "The Basic Pitch model has an unexpected interface: \(detail)"
+      "The bundled Basic Pitch model could not be found."
+    case let .modelLoadFailed(detail):
+      "The Basic Pitch model could not be loaded: \(detail)"
+    case let .modelValidationFailed(detail):
+      "The Basic Pitch model has an unexpected interface: \(detail)"
     case .microphonePermissionDenied:
-      return "Microphone permission was denied."
+      "Microphone permission was denied."
     case .recordingAlreadyActive:
-      return "A recording is already active."
+      "A recording is already active."
     case .recordingNotActive:
-      return "No recording is active."
+      "No recording is active."
     case .audioSessionInterrupted:
-      return "The audio session was interrupted."
-    case .audioConversionFailed(let detail):
-      return "Audio conversion failed: \(detail)"
-    case .inferenceFailed(let detail):
-      return "Basic Pitch inference failed: \(detail)"
+      "The audio session was interrupted."
+    case let .audioConversionFailed(detail):
+      "Audio conversion failed: \(detail)"
+    case let .inferenceFailed(detail):
+      "Basic Pitch inference failed: \(detail)"
     case .transcriptionAlreadyRunning:
-      return "A transcription is already running."
+      "A transcription is already running."
     }
   }
 }

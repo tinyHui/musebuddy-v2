@@ -7,6 +7,7 @@ readonly APP_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 readonly RESOURCES_DIR="${APP_DIR}/modules/basic-pitch/ios/Resources"
 readonly SOURCE_MODEL="${RESOURCES_DIR}/nmp.mlpackage"
 readonly COMPILED_MODEL="${RESOURCES_DIR}/nmp.mlmodelc"
+readonly COMPILED_MODEL_BIN="${COMPILED_MODEL}/coremldata.bin"
 readonly DEPLOYMENT_TARGET="15.1"
 
 command -v xcrun >/dev/null || {
@@ -17,6 +18,11 @@ command -v xcrun >/dev/null || {
 if [[ ! -d "${SOURCE_MODEL}" ]]; then
   printf 'error: Missing Basic Pitch source model: %s\n' "${SOURCE_MODEL}" >&2
   exit 1
+fi
+
+if [[ -f "${COMPILED_MODEL_BIN}" ]]; then
+  printf 'Basic Pitch model already compiled: %s\n' "${COMPILED_MODEL}"
+  exit 0
 fi
 
 readonly TEMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/musebuddy-basic-pitch-model.XXXXXX")"

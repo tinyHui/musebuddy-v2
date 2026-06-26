@@ -27,13 +27,12 @@ enum BasicPitchDecoder {
     var events: [DecodedNote] = []
     var onsetPeaks: [(time: Int, pitch: Int)] = []
 
-    for time in 1..<(output.frameCount - 1) {
-      for pitch in 0..<pitchCount {
+    for time in 1 ..< (output.frameCount - 1) {
+      for pitch in 0 ..< pitchCount {
         let value = inferredOnsets[index(time, pitch)]
         if value >= onsetThreshold,
-          value > inferredOnsets[index(time - 1, pitch)],
-          value > inferredOnsets[index(time + 1, pitch)]
-        {
+           value > inferredOnsets[index(time - 1, pitch)],
+           value > inferredOnsets[index(time + 1, pitch)] {
           onsetPeaks.append((time, pitch))
         }
       }
@@ -46,7 +45,7 @@ enum BasicPitchDecoder {
 
       var time = peak.time + 1
       var quietFrames = 0
-      while time < output.frameCount - 1 && quietFrames < energyTolerance {
+      while time < output.frameCount - 1, quietFrames < energyTolerance {
         if remainingEnergy[index(time, peak.pitch)] < frameThreshold {
           quietFrames += 1
         } else {
@@ -83,13 +82,12 @@ enum BasicPitchDecoder {
     }
 
     while let maximum = maximumEnergy(in: remainingEnergy),
-      maximum.value > frameThreshold
-    {
+          maximum.value > frameThreshold {
       remainingEnergy[index(maximum.time, maximum.pitch)] = 0
 
       var forwardTime = maximum.time + 1
       var quietFrames = 0
-      while forwardTime < output.frameCount - 1 && quietFrames < energyTolerance {
+      while forwardTime < output.frameCount - 1, quietFrames < energyTolerance {
         if remainingEnergy[index(forwardTime, maximum.pitch)] < frameThreshold {
           quietFrames += 1
         } else {
@@ -107,7 +105,7 @@ enum BasicPitchDecoder {
 
       var backwardTime = maximum.time - 1
       quietFrames = 0
-      while backwardTime > 0 && quietFrames < energyTolerance {
+      while backwardTime > 0, quietFrames < energyTolerance {
         if remainingEnergy[index(backwardTime, maximum.pitch)] < frameThreshold {
           quietFrames += 1
         } else {
@@ -150,8 +148,8 @@ enum BasicPitchDecoder {
     let windowNumber = floor(Double(frame) / Double(annotationFramesPerWindow))
     let windowOffset =
       (Double(fftHop) / Double(sampleRate))
-      * (Double(annotationFramesPerWindow) - (Double(audioSampleCount) / Double(fftHop)))
-      + alignmentOffset
+        * (Double(annotationFramesPerWindow) - (Double(audioSampleCount) / Double(fftHop)))
+        + alignmentOffset
     return max(0, originalTime - (windowOffset * windowNumber))
   }
 
@@ -168,8 +166,8 @@ enum BasicPitchDecoder {
       maximumOnset = max(maximumOnset, value)
     }
 
-    for time in 2..<frameCount {
-      for pitch in 0..<pitchCount {
+    for time in 2 ..< frameCount {
+      for pitch in 0 ..< pitchCount {
         let current = frames[index(time, pitch)]
         let oneFrameDifference = current - frames[index(time - 1, pitch)]
         let twoFrameDifference = current - frames[index(time - 2, pitch)]
@@ -197,7 +195,7 @@ enum BasicPitchDecoder {
     guard start < end else {
       return
     }
-    for time in start..<end {
+    for time in start ..< end {
       energy[index(time, pitch)] = 0
       if pitch > 0 {
         energy[index(time, pitch - 1)] = 0
@@ -218,7 +216,7 @@ enum BasicPitchDecoder {
       return 0
     }
     var sum: Float = 0
-    for time in start..<end {
+    for time in start ..< end {
       sum += values[index(time, pitch)]
     }
     return sum / Float(end - start)
@@ -232,7 +230,7 @@ enum BasicPitchDecoder {
     }
     var maximumIndex = 0
     var maximumValue = energy[0]
-    for candidate in 1..<energy.count where energy[candidate] > maximumValue {
+    for candidate in 1 ..< energy.count where energy[candidate] > maximumValue {
       maximumIndex = candidate
       maximumValue = energy[candidate]
     }

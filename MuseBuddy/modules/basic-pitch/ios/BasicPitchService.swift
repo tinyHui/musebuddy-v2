@@ -247,9 +247,9 @@ final class BasicPitchService: @unchecked Sendable {
         do {
           try file.write(from: buffer)
         } catch {
-          self.recordingWriteError = error
+          recordingWriteError = error
         }
-        self.updateLevel(from: buffer)
+        updateLevel(from: buffer)
       }
 
       audioEngine.prepare()
@@ -291,29 +291,29 @@ final class BasicPitchService: @unchecked Sendable {
     let timer = DispatchSource.makeTimerSource(queue: workQueue)
     timer.schedule(deadline: .now(), repeating: .milliseconds(100))
     timer.setEventHandler { [weak self] in
-      guard let self, self.state == .recording, let startedAt = self.recordingStartedAt else {
+      guard let self, state == .recording, let startedAt = recordingStartedAt else {
         return
       }
 
-      let elapsed = min(Date().timeIntervalSince(startedAt), self.maximumRecordingDuration)
-      self.meterLock.lock()
-      let level = self.latestLevel
-      self.meterLock.unlock()
-      self.onProgress?([
+      let elapsed = min(Date().timeIntervalSince(startedAt), maximumRecordingDuration)
+      meterLock.lock()
+      let level = latestLevel
+      meterLock.unlock()
+      onProgress?([
         "elapsedMs": Int((elapsed * 1_000).rounded()),
         "level": level,
       ])
 
-      if elapsed >= self.maximumRecordingDuration {
+      if elapsed >= maximumRecordingDuration {
         do {
-          try self.finishRecordingCapture(nextState: .captured)
-          let recording = try self.makeRecordingArtifact()
-          self.onRecordingFinished?([
+          try finishRecordingCapture(nextState: .captured)
+          let recording = try makeRecordingArtifact()
+          onRecordingFinished?([
             "uri": recording.uri,
             "durationMs": recording.durationMs,
           ])
         } catch {
-          self.state = .interrupted
+          state = .interrupted
         }
       }
     }
@@ -331,9 +331,9 @@ final class BasicPitchService: @unchecked Sendable {
     }
 
     var squareSum: Float = 0
-    for channel in 0..<Int(buffer.format.channelCount) {
+    for channel in 0 ..< Int(buffer.format.channelCount) {
       let samples = channels[channel]
-      for frame in 0..<frameLength {
+      for frame in 0 ..< frameLength {
         let value = samples[frame]
         squareSum += value * value
       }
@@ -489,7 +489,7 @@ final class BasicPitchService: @unchecked Sendable {
           shape: [1, NSNumber(value: sampleCount), 1],
           dataType: .float32
         )
-        for sampleIndex in 0..<sampleCount {
+        for sampleIndex in 0 ..< sampleCount {
           let sourceIndex = windowStart + sampleIndex
           input[sampleIndex] = NSNumber(
             value: sourceIndex < paddedSamples.count ? paddedSamples[sourceIndex] : 0
@@ -497,7 +497,7 @@ final class BasicPitchService: @unchecked Sendable {
         }
 
         let provider = try MLDictionaryFeatureProvider(dictionary: [
-          "input_2": MLFeatureValue(multiArray: input)
+          "input_2": MLFeatureValue(multiArray: input),
         ])
         let prediction = try model.prediction(from: provider)
         guard
@@ -551,8 +551,8 @@ final class BasicPitchService: @unchecked Sendable {
   ) -> [Float] {
     var values = [Float]()
     values.reserveCapacity(frameCount * pitchCount)
-    for frame in startFrame..<(startFrame + frameCount) {
-      for pitch in 0..<pitchCount {
+    for frame in startFrame ..< (startFrame + frameCount) {
+      for pitch in 0 ..< pitchCount {
         let offset = frame * pitchCount + pitch
         values.append(array[offset].floatValue)
       }
@@ -697,7 +697,7 @@ final class BasicPitchService: @unchecked Sendable {
     try await withCheckedThrowingContinuation { continuation in
       workQueue.async {
         do {
-          continuation.resume(returning: try operation())
+          try continuation.resume(returning: operation())
         } catch {
           continuation.resume(throwing: error)
         }
