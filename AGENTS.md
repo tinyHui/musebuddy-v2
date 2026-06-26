@@ -11,6 +11,10 @@ MuseBuddy is an Expo/React Native iOS app for piano transcription. The initial p
 
 Keep the first version focused. Do not add accounts, cloud processing, recording history, MIDI export, or elaborate visual design unless the task explicitly requires them.
 
+MuseBuddy only builds and ships for iOS. Do not add Android or web support unless the task
+explicitly changes the product target. Local Expo modules do not need `.web.ts`, Android,
+or other non-iOS facades; remove those platform facades instead of maintaining stubs.
+
 The app currently targets Expo SDK 56. Check the matching versioned Expo documentation before changing Expo APIs or native integration:
 <https://docs.expo.dev/versions/v56.0.0/>
 
