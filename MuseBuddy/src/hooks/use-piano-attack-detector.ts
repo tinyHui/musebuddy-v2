@@ -4,8 +4,10 @@ import {
   addAmbientLevelChangeListener,
   addAttackListener,
   PianoAttackDetectorError,
+  shareArtifact,
   startListening,
   stopListening,
+  type PianoAttackDetectorArtifactKind,
   type PianoAmbientLevelChangeEvent,
   type PianoAttackEvent,
 } from '../../modules/piano-attack-detector';
@@ -90,10 +92,21 @@ export function usePianoAttackDetector() {
     }
   }, []);
 
+  const share = useCallback(async (kind: PianoAttackDetectorArtifactKind) => {
+    setStatusMessage('');
+    try {
+      await shareArtifact(kind);
+    } catch (error) {
+      logError('Piano attack detector failed to share an artifact.', error);
+      setStatusMessage(messageFor(error));
+    }
+  }, []);
+
   return {
     ambientLevel,
     lastAttack,
     phase,
+    share,
     start,
     statusMessage,
     stop,

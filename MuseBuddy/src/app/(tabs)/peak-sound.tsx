@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useReducer } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -6,23 +6,52 @@ import { usePianoAttackDetector } from '@/hooks/use-piano-attack-detector';
 
 type AttackLogEntry = NonNullable<ReturnType<typeof usePianoAttackDetector>['lastAttack']>;
 
+type AttackLogAction =
+  | {
+      attack: AttackLogEntry;
+      type: 'add';
+    }
+  | {
+      type: 'clear';
+    };
+
+function attackLogReducer(currentLog: AttackLogEntry[], action: AttackLogAction): AttackLogEntry[] {
+  switch (action.type) {
+    case 'add':
+      return [action.attack, ...currentLog].slice(0, 12);
+    case 'clear':
+      return [];
+  }
+}
+
 function formatDb(value: number): string {
   return `${Math.round(value)} dB`;
 }
 
 export default function PeakSoundScreen() {
-  const { ambientLevel, lastAttack, phase, start, statusMessage, stop } = usePianoAttackDetector();
-  const [attackLog, setAttackLog] = useState<AttackLogEntry[]>([]);
+  const { ambientLevel, lastAttack, phase, share, start, statusMessage, stop } =
+    usePianoAttackDetector();
+  const [attackLog, dispatchAttackLog] = useReducer(attackLogReducer, []);
   const isBusy = phase === 'starting' || phase === 'stopping';
   const isListening = phase === 'listening';
+  const hasLogEntries = attackLog.length > 0;
 
   useEffect(() => {
     if (!lastAttack) {
       return;
     }
 
-    setAttackLog((currentLog) => [lastAttack, ...currentLog].slice(0, 12));
+    dispatchAttackLog({ attack: lastAttack, type: 'add' });
   }, [lastAttack]);
+
+  const startNewRound = useCallback(() => {
+    dispatchAttackLog({ type: 'clear' });
+    void start();
+  }, [start]);
+
+  const clearLog = useCallback(() => {
+    dispatchAttackLog({ type: 'clear' });
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -57,12 +86,12 @@ export default function PeakSoundScreen() {
             <Text selectable style={styles.logTitle}>
               Attack log
             </Text>
-            {attackLog.length > 0 ? (
+            {hasLogEntries ? (
               attackLog.map((attack) => (
                 <Text key={attack.id} selectable style={styles.logLine}>
                   #{attack.id} {Math.round(attack.timestampMs)}ms | peak {formatDb(attack.levelDb)}{' '}
-                  | ambient {formatDb(attack.ambientDb)} | delta +{formatDb(attack.deltaDb)} |
-                  onset {formatDb(attack.onsetStrengthDb)}
+                  | ambient {formatDb(attack.ambientDb)} | delta +{formatDb(attack.deltaDb)} | onset{' '}
+                  {formatDb(attack.onsetStrengthDb)}
                 </Text>
               ))
             ) : (
@@ -80,8 +109,26 @@ export default function PeakSoundScreen() {
         </View>
 
         <View style={styles.controls}>
-          <ActionButton label="Start" onPress={start} disabled={isListening || isBusy} />
+          <ActionButton label="Start" onPress={startNewRound} disabled={isListening || isBusy} />
           <ActionButton label="Stop" onPress={stop} disabled={!isListening || isBusy} tone="stop" />
+          <ActionButton
+            label="Clear log"
+            onPress={clearLog}
+            disabled={!hasLogEntries}
+            tone="secondary"
+          />
+          <ActionButton
+            label="Download audio"
+            onPress={() => void share('audio')}
+            disabled={isListening || isBusy}
+            tone="secondary"
+          />
+          <ActionButton
+            label="Download logs"
+            onPress={() => void share('log')}
+            disabled={isListening || isBusy}
+            tone="secondary"
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -107,7 +154,7 @@ type ActionButtonProps = {
   disabled?: boolean;
   label: string;
   onPress: () => void;
-  tone?: 'primary' | 'stop';
+  tone?: 'primary' | 'secondary' | 'stop';
 };
 
 function ActionButton({ disabled = false, label, onPress, tone = 'primary' }: ActionButtonProps) {
@@ -118,6 +165,7 @@ function ActionButton({ disabled = false, label, onPress, tone = 'primary' }: Ac
       onPress={onPress}
       style={({ pressed }) => [
         styles.button,
+        tone === 'secondary' && styles.secondaryButton,
         tone === 'stop' && styles.stopButton,
         disabled && styles.buttonDisabled,
         pressed && !disabled && styles.buttonPressed,
@@ -221,6 +269,7 @@ const styles = StyleSheet.create({
   },
   controls: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 12,
   },
   button: {
@@ -228,9 +277,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#2457d6',
     borderRadius: 8,
     flex: 1,
+    minWidth: 140,
     minHeight: 52,
     justifyContent: 'center',
     paddingHorizontal: 18,
+  },
+  secondaryButton: {
+    backgroundColor: '#3f4652',
   },
   stopButton: {
     backgroundColor: '#ad2119',
@@ -245,6 +298,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 16,
     fontWeight: '700',
+    textAlign: 'center',
   },
   buttonLabelDisabled: {
     color: '#77736b',
