@@ -1,14 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Ionicons } from './icons';
 
 type RhythmBarViewerProps = {
   barIndex: number;
   currentStepIndex: number | null;
+  onShuffleBar: (barIndex: number) => void;
   steps: readonly boolean[];
 };
 
-export function RhythmBarViewer({ barIndex, currentStepIndex, steps }: RhythmBarViewerProps) {
+export function RhythmBarViewer({
+  barIndex,
+  currentStepIndex,
+  onShuffleBar,
+  steps,
+}: RhythmBarViewerProps) {
   const isActiveBar = currentStepIndex !== null;
 
   return (
@@ -18,7 +24,17 @@ export function RhythmBarViewer({ barIndex, currentStepIndex, steps }: RhythmBar
     >
       <View style={styles.header}>
         <Text style={styles.label}>Bar {barIndex + 1}</Text>
-        <Ionicons name="radio-outline" size={16} color="#2f4f16" />
+        <Pressable
+          accessibilityLabel={`Shuffle bar ${barIndex + 1} rhythm`}
+          accessibilityRole="button"
+          hitSlop={8}
+          onPress={() => {
+            onShuffleBar(barIndex);
+          }}
+          style={({ pressed }) => [styles.shuffleButton, pressed && styles.shuffleButtonPressed]}
+        >
+          <Ionicons name="shuffle-outline" size={16} color="#2f4f16" />
+        </Pressable>
       </View>
 
       <View pointerEvents="none" style={styles.iconLayer}>
@@ -86,6 +102,16 @@ const styles = StyleSheet.create({
     color: '#2f4f16',
     fontSize: 13,
     fontWeight: '800',
+  },
+  shuffleButton: {
+    alignItems: 'center',
+    borderRadius: 4,
+    height: 28,
+    justifyContent: 'center',
+    width: 28,
+  },
+  shuffleButtonPressed: {
+    backgroundColor: 'rgba(47, 79, 22, 0.12)',
   },
   iconLayer: {
     alignItems: 'center',

@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { BLOCK_COUNT, BPM_STEP, DEFAULT_BPM, MAX_BPM, MIN_BPM, STEPS_PER_BLOCK } from './constants';
 import { NoteBarViewer } from './note-bar-viewer';
-import { generateSequencerPattern } from './pattern';
+import { generateSequencerPattern, shuffleBlockPattern } from './pattern';
 import { RhythmBarViewer } from './rhythm-bar-viewer';
 import { SequencerControls } from './sequencer-controls';
 import { SequencerPattern } from './types';
@@ -11,7 +11,7 @@ import { useSequencerPlayback } from './use-sequencer-playback';
 
 export function RhythmTrainerView() {
   const [bpm, setBpm] = useState(DEFAULT_BPM);
-  const [pattern] = useState<SequencerPattern>(() => generateSequencerPattern());
+  const [pattern, setPattern] = useState<SequencerPattern>(() => generateSequencerPattern());
   const { currentStepIndex, isPlaying, togglePlayback } = useSequencerPlayback({ bpm, pattern });
 
   const decreaseBpm = useCallback(() => {
@@ -20,6 +20,18 @@ export function RhythmTrainerView() {
 
   const increaseBpm = useCallback(() => {
     setBpm((value) => Math.min(MAX_BPM, value + BPM_STEP));
+  }, []);
+
+  const shuffleBar = useCallback((barIndex: number) => {
+    setPattern((currentPattern) => {
+      const barStartIndex = barIndex * STEPS_PER_BLOCK;
+      const shuffledBar = shuffleBlockPattern(
+        currentPattern.slice(barStartIndex, barStartIndex + STEPS_PER_BLOCK),
+      );
+      const nextPattern = [...currentPattern];
+      nextPattern.splice(barStartIndex, STEPS_PER_BLOCK, ...shuffledBar);
+      return nextPattern;
+    });
   }, []);
 
   return (
@@ -40,6 +52,7 @@ export function RhythmTrainerView() {
               <RhythmBarViewer
                 barIndex={barIndex}
                 currentStepIndex={currentStepInBar}
+                onShuffleBar={shuffleBar}
                 steps={steps}
               />
               <NoteBarViewer

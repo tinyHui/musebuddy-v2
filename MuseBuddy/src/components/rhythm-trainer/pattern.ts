@@ -20,3 +20,17 @@ export function generateBlockPattern(): boolean[] {
 export function generateSequencerPattern(): SequencerPattern {
   return Array.from({ length: BLOCK_COUNT }, () => generateBlockPattern()).flat();
 }
+
+export function shuffleBlockPattern(steps: readonly boolean[]): boolean[] {
+  const shuffledSteps = [...steps];
+
+  for (let currentIndex = shuffledSteps.length - 1; currentIndex > 0; currentIndex -= 1) {
+    const randomIndex = Math.floor(Math.random() * (currentIndex + 1));
+    [shuffledSteps[currentIndex], shuffledSteps[randomIndex]] = [
+      shuffledSteps[randomIndex],
+      shuffledSteps[currentIndex],
+    ];
+  }
+
+  return shuffledSteps;
+}
