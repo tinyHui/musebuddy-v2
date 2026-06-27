@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { TOTAL_STEPS } from './constants';
 import { SequencerPattern } from './types';
 
-const BEEP_SOURCE = require('../../../assets/audio/sequencer-beep.wav');
+const BEEP_SOURCE = require('@assets/audio/sequencer-beep.wav');
 
 type UseSequencerPlaybackOptions = {
   bpm: number;

@@ -1,6 +1,10 @@
+import { Image } from 'expo-image';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Ionicons } from './icons';
+
+const ATTACK_COIN_SOURCE = require('@assets/images/coins/coin-front.png');
+const REST_COIN_SOURCE = require('@assets/images/coins/coin-back.png');
 
 type RhythmBarViewerProps = {
   barIndex: number;
@@ -42,11 +46,11 @@ export function RhythmBarViewer({
       </View>
 
       <View style={styles.stepGrid}>
-        {steps.map((isEnabled, stepIndex) => (
+        {steps.map((isAttack, stepIndex) => (
           <StepPart
             key={stepIndex}
             isCurrent={currentStepIndex === stepIndex}
-            isEnabled={isEnabled}
+            isAttack={isAttack}
             stepIndex={stepIndex}
           />
         ))}
@@ -56,22 +60,27 @@ export function RhythmBarViewer({
 }
 
 type StepPartProps = {
+  isAttack: boolean;
   isCurrent: boolean;
-  isEnabled: boolean;
   stepIndex: number;
 };
 
-function StepPart({ isCurrent, isEnabled, stepIndex }: StepPartProps) {
+function StepPart({ isAttack, isCurrent, stepIndex }: StepPartProps) {
   return (
     <View
-      accessibilityLabel={`Step ${stepIndex + 1} is ${isEnabled ? 'enabled' : 'disabled'}`}
+      accessibilityLabel={`Step ${stepIndex + 1}: ${isAttack ? 'attack' : 'rest'}`}
       style={[
         styles.stepPart,
-        isEnabled ? styles.stepPartEnabled : styles.stepPartDisabled,
+        isAttack ? styles.stepPartAttack : styles.stepPartRest,
         isCurrent && styles.stepPartCurrent,
       ]}
     >
-      <View style={[styles.stepIndicator, isEnabled && styles.stepIndicatorEnabled]} />
+      <Image
+        accessible={false}
+        contentFit="contain"
+        source={isAttack ? ATTACK_COIN_SOURCE : REST_COIN_SOURCE}
+        style={styles.stepCoin}
+      />
     </View>
   );
 }
@@ -136,13 +145,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flex: 1,
     height: 44,
-    justifyContent: 'flex-end',
-    paddingBottom: 5,
+    justifyContent: 'center',
   },
-  stepPartEnabled: {
+  stepPartAttack: {
     backgroundColor: '#fff7a8',
   },
-  stepPartDisabled: {
+  stepPartRest: {
     backgroundColor: 'rgba(255, 255, 255, 0.52)',
   },
   stepPartCurrent: {
@@ -150,13 +158,8 @@ const styles = StyleSheet.create({
     borderColor: '#2f4f16',
     borderWidth: 2,
   },
-  stepIndicator: {
-    backgroundColor: 'rgba(77, 111, 36, 0.28)',
-    borderRadius: 2,
-    height: 4,
-    width: '58%',
-  },
-  stepIndicatorEnabled: {
-    backgroundColor: '#2f4f16',
+  stepCoin: {
+    height: 34,
+    width: 34,
   },
 });
