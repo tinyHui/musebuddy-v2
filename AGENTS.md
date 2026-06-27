@@ -125,6 +125,7 @@ cd MuseBuddy
 pnpm format:check
 pnpm lint
 pnpm typecheck
+pnpm test
 ```
 
 Use `pnpm --dir MuseBuddy check` from the repository root, or `pnpm check` from
