@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { BLOCK_COUNT, BPM_STEP, DEFAULT_BPM, MAX_BPM, MIN_BPM, STEPS_PER_BLOCK } from './constants';
 import { NoteBarViewer } from './note-bar-viewer';
-import { generateSequencerPattern, shuffleBlockPattern } from './pattern';
+import { generateBlockPattern, generateSequencerPattern, shuffleBlockPattern } from './pattern';
 import { RhythmBarViewer } from './rhythm-bar-viewer';
 import { SequencerControls } from './sequencer-controls';
 import { SequencerPattern } from './types';
@@ -20,6 +20,16 @@ export function RhythmTrainerView() {
 
   const increaseBpm = useCallback(() => {
     setBpm((value) => Math.min(MAX_BPM, value + BPM_STEP));
+  }, []);
+
+  const regenerateBar = useCallback((barIndex: number) => {
+    setPattern((currentPattern) => {
+      const barStartIndex = barIndex * STEPS_PER_BLOCK;
+      const regeneratedBar = generateBlockPattern();
+      const nextPattern = [...currentPattern];
+      nextPattern.splice(barStartIndex, STEPS_PER_BLOCK, ...regeneratedBar);
+      return nextPattern;
+    });
   }, []);
 
   const shuffleBar = useCallback((barIndex: number) => {
@@ -52,6 +62,7 @@ export function RhythmTrainerView() {
               <RhythmBarViewer
                 barIndex={barIndex}
                 currentStepIndex={currentStepInBar}
+                onRegenerateBar={regenerateBar}
                 onShuffleBar={shuffleBar}
                 steps={steps}
               />

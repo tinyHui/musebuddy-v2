@@ -9,6 +9,7 @@ const REST_COIN_SOURCE = require('@assets/images/coins/coin-back.png');
 type RhythmBarViewerProps = {
   barIndex: number;
   currentStepIndex: number | null;
+  onRegenerateBar: (barIndex: number) => void;
   onShuffleBar: (barIndex: number) => void;
   steps: readonly boolean[];
 };
@@ -16,6 +17,7 @@ type RhythmBarViewerProps = {
 export function RhythmBarViewer({
   barIndex,
   currentStepIndex,
+  onRegenerateBar,
   onShuffleBar,
   steps,
 }: RhythmBarViewerProps) {
@@ -28,17 +30,30 @@ export function RhythmBarViewer({
     >
       <View style={styles.header}>
         <Text style={styles.label}>Bar {barIndex + 1}</Text>
-        <Pressable
-          accessibilityLabel={`Shuffle bar ${barIndex + 1} rhythm`}
-          accessibilityRole="button"
-          hitSlop={8}
-          onPress={() => {
-            onShuffleBar(barIndex);
-          }}
-          style={({ pressed }) => [styles.shuffleButton, pressed && styles.shuffleButtonPressed]}
-        >
-          <Ionicons name="shuffle-outline" size={16} color="#2f4f16" />
-        </Pressable>
+        <View style={styles.actionButtons}>
+          <Pressable
+            accessibilityLabel={`Shuffle bar ${barIndex + 1} rhythm`}
+            accessibilityRole="button"
+            hitSlop={8}
+            onPress={() => {
+              onShuffleBar(barIndex);
+            }}
+            style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}
+          >
+            <Ionicons name="shuffle-outline" size={16} color="#2f4f16" />
+          </Pressable>
+          <Pressable
+            accessibilityLabel={`Regenerate bar ${barIndex + 1} rhythm`}
+            accessibilityRole="button"
+            hitSlop={8}
+            onPress={() => {
+              onRegenerateBar(barIndex);
+            }}
+            style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}
+          >
+            <Ionicons name="refresh-outline" size={16} color="#2f4f16" />
+          </Pressable>
+        </View>
       </View>
 
       <View pointerEvents="none" style={styles.iconLayer}>
@@ -112,14 +127,18 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '800',
   },
-  shuffleButton: {
+  actionButtons: {
+    flexDirection: 'row',
+    gap: 4,
+  },
+  actionButton: {
     alignItems: 'center',
     borderRadius: 4,
     height: 28,
     justifyContent: 'center',
     width: 28,
   },
-  shuffleButtonPressed: {
+  actionButtonPressed: {
     backgroundColor: 'rgba(47, 79, 22, 0.12)',
   },
   iconLayer: {
