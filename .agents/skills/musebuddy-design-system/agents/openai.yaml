@@ -1,0 +1,4 @@
+interface:
+  display_name: "MuseBuddy Design System"
+  short_description: "Apply MuseBuddy's bold game-like UI system"
+  default_prompt: "Use $musebuddy-design-system to design or review MuseBuddy UI with the app's bold, vivid, game-like visual system."

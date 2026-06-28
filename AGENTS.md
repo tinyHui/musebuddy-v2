@@ -90,6 +90,14 @@ Consult the relevant file in `.agents/references/` before changing an area it co
 - `basic-pitch-coreml.md`: Basic Pitch model conversion, Core ML integration, audio
   preprocessing, inference, and note decoding.
 
+## Design System
+
+MuseBuddy uses Tamagui for its design-system foundation. Before changing UI styling,
+theme tokens, Tamagui configuration, component visuals, or interaction states, consult
+`.agents/skills/musebuddy-design-system/SKILL.md`. Keep `AGENTS.md` focused on engineering
+rules; the design skill is the source of truth for color, typography, mood, shadows,
+component feel, and visual review criteria.
+
 ## Package and Command Policy
 
 Use pnpm exclusively:

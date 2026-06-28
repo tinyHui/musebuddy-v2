@@ -1,6 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import Svg, { Circle, G, Rect } from 'react-native-svg';
 
+import { museBuddyBorders, museBuddyColors, museBuddyRadii } from '@/constants/design-tokens';
+
 import {
   getPianoKeyboardMarkers,
   normalizePianoKeyboardKey,
@@ -66,10 +68,10 @@ function getMarkerPosition(key: CanonicalPianoKeyboardKeyName) {
 
 export function PianoKeyboard({
   accessibilityLabel,
-  keyColor = '#39c5c9',
+  keyColor = museBuddyColors.accentBlue,
   keys = [],
   root,
-  rootColor = '#ff6861',
+  rootColor = museBuddyColors.accentRed,
   width,
 }: PianoKeyboardProps) {
   const markers = getPianoKeyboardMarkers(root, keys);
@@ -88,23 +90,23 @@ export function PianoKeyboard({
         <G>
           {whiteKeys.map((key) => (
             <Rect
-              fill="#201b22"
+              fill={museBuddyColors.ink}
               height={122}
               key={`white-shadow-${key}`}
-              rx={5}
+              rx={museBuddyRadii.small}
               width={40}
-              x={whiteKeyPositions[key] + 9}
+              x={whiteKeyPositions[key]}
               y={29}
             />
           ))}
           {blackKeys.map(({ key, x }) => (
             <Rect
-              fill="#201b22"
+              fill={museBuddyColors.ink}
               height={76}
               key={`black-shadow-${key}`}
-              rx={4}
+              rx={museBuddyRadii.small}
               width={24}
-              x={x + 9}
+              x={x}
               y={29}
             />
           ))}
@@ -113,13 +115,13 @@ export function PianoKeyboard({
         <G>
           {whiteKeys.map((key) => (
             <Rect
-              fill="#fff8e8"
+              fill={museBuddyColors.surface}
               height={122}
               key={key}
-              rx={5}
-              stroke="#201b22"
+              rx={museBuddyRadii.small}
+              stroke={museBuddyColors.ink}
               strokeLinejoin="round"
-              strokeWidth={5}
+              strokeWidth={museBuddyBorders.extraBold}
               width={40}
               x={whiteKeyPositions[key]}
               y={20}
@@ -127,13 +129,20 @@ export function PianoKeyboard({
           ))}
         </G>
 
-        <Rect fill="#f4ead5" height={12} rx={4} width={280} x={10} y={20} />
+        <Rect
+          fill={museBuddyColors.surfaceMuted}
+          height={12}
+          rx={museBuddyRadii.small}
+          width={280}
+          x={10}
+          y={20}
+        />
         <Rect
           fill="none"
           height={122}
-          rx={5}
-          stroke="#201b22"
-          strokeWidth={5}
+          rx={museBuddyRadii.small}
+          stroke={museBuddyColors.ink}
+          strokeWidth={museBuddyBorders.extraBold}
           width={280}
           x={10}
           y={20}
@@ -142,13 +151,13 @@ export function PianoKeyboard({
         <G>
           {blackKeys.map(({ key, x }) => (
             <Rect
-              fill="#201b22"
+              fill={museBuddyColors.ink}
               height={76}
               key={key}
-              rx={4}
-              stroke="#201b22"
+              rx={museBuddyRadii.small}
+              stroke={museBuddyColors.ink}
               strokeLinejoin="round"
-              strokeWidth={5}
+              strokeWidth={museBuddyBorders.extraBold}
               width={24}
               x={x}
               y={20}
@@ -167,8 +176,8 @@ export function PianoKeyboard({
                 fill={isRoot ? rootColor : keyColor}
                 key={`marker-${key}-${rootKey}`}
                 r={r}
-                stroke="#201b22"
-                strokeWidth={4}
+                stroke={museBuddyColors.ink}
+                strokeWidth={museBuddyBorders.bold}
               />
             );
           })}

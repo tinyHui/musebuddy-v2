@@ -1,8 +1,10 @@
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
+import { TamaguiProvider } from 'tamagui';
 
 import StorybookUIRoot from '../../.rnstorybook';
+import tamaguiConfig from '../../tamagui.config';
 
 const isStorybookEnabled = process.env.EXPO_PUBLIC_STORYBOOK_ENABLED === 'true';
 
@@ -16,9 +18,9 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <TamaguiProvider config={tamaguiConfig} defaultTheme="light">
       <Stack screenOptions={{ headerShown: false }} />
       <StatusBar style="dark" />
-    </>
+    </TamaguiProvider>
   );
 }
