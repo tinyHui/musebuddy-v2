@@ -6,7 +6,6 @@ import { Dot, Factory, StaveNote } from 'vexflow';
 import { DEFAULT_NOTE_KEY, NoteBarVexflowEvent } from './note-bar-vexflow';
 
 type NoteBarSheetProps = {
-  barIndex: number;
   currentStepIndex: number | null;
   events: readonly NoteBarVexflowEvent[];
   dom?: import('expo/dom').DOMProps;
@@ -15,7 +14,7 @@ type NoteBarSheetProps = {
 const STAVE_WIDTH = 328;
 const STAVE_HEIGHT = 120;
 
-export default function NoteBarSheet({ barIndex, currentStepIndex, events }: NoteBarSheetProps) {
+export default function NoteBarSheet({ currentStepIndex, events }: NoteBarSheetProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const elementId = useId().replaceAll(':', '-');
 
@@ -91,7 +90,7 @@ export default function NoteBarSheet({ barIndex, currentStepIndex, events }: Not
 
   return (
     <div
-      aria-label={`Bar ${barIndex + 1} note preview`}
+      aria-label="Note preview for rhythm bar"
       id={elementId}
       ref={containerRef}
       style={{

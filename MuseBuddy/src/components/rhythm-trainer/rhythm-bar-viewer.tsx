@@ -7,48 +7,42 @@ const ATTACK_COIN_SOURCE = require('@assets/images/coins/coin-front.png');
 const REST_COIN_SOURCE = require('@assets/images/coins/coin-back.png');
 
 type RhythmBarViewerProps = {
-  barIndex: number;
   currentStepIndex: number | null;
-  onRegenerateBar: (barIndex: number) => void;
-  onShuffleBar: (barIndex: number) => void;
+  isPlayingBar: boolean;
+  onRegenerate: () => void;
+  onShuffle: () => void;
   steps: readonly boolean[];
 };
 
 export function RhythmBarViewer({
-  barIndex,
   currentStepIndex,
-  onRegenerateBar,
-  onShuffleBar,
+  isPlayingBar,
+  onRegenerate,
+  onShuffle,
   steps,
 }: RhythmBarViewerProps) {
-  const isActiveBar = currentStepIndex !== null;
-
   return (
     <View
-      accessibilityLabel={`Bar ${barIndex + 1} rhythm with eight eighth-note steps`}
-      style={[styles.container, isActiveBar && styles.containerPlaying]}
+      accessibilityLabel="Rhythm bar with eight eighth-note steps"
+      style={[styles.container, isPlayingBar && styles.containerPlaying]}
     >
       <View style={styles.header}>
-        <Text style={styles.label}>Bar {barIndex + 1}</Text>
+        <Text style={styles.label}>{isPlayingBar ? 'Playing bar' : 'Rhythm bar'}</Text>
         <View style={styles.actionButtons}>
           <Pressable
-            accessibilityLabel={`Shuffle bar ${barIndex + 1} rhythm`}
+            accessibilityLabel="Shuffle rhythm bar"
             accessibilityRole="button"
             hitSlop={8}
-            onPress={() => {
-              onShuffleBar(barIndex);
-            }}
+            onPress={onShuffle}
             style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}
           >
             <Ionicons name="shuffle-outline" size={16} color="#2f4f16" />
           </Pressable>
           <Pressable
-            accessibilityLabel={`Regenerate bar ${barIndex + 1} rhythm`}
+            accessibilityLabel="Regenerate rhythm bar"
             accessibilityRole="button"
             hitSlop={8}
-            onPress={() => {
-              onRegenerateBar(barIndex);
-            }}
+            onPress={onRegenerate}
             style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}
           >
             <Ionicons name="refresh-outline" size={16} color="#2f4f16" />

@@ -5,18 +5,16 @@ import NoteBarSheet from './note-bar-sheet.dom';
 import { convertBooleanBarToVexflowEvents } from './note-bar-vexflow';
 
 type NoteBarViewerProps = {
-  barIndex: number;
   currentStepIndex: number | null;
   steps: readonly boolean[];
 };
 
-export function NoteBarViewer({ barIndex, currentStepIndex, steps }: NoteBarViewerProps) {
+export function NoteBarViewer({ currentStepIndex, steps }: NoteBarViewerProps) {
   const events = useMemo(() => convertBooleanBarToVexflowEvents(steps), [steps]);
 
   return (
-    <View accessibilityLabel={`Bar ${barIndex + 1} note preview`} style={styles.container}>
+    <View accessibilityLabel="Note preview for rhythm bar" style={styles.container}>
       <NoteBarSheet
-        barIndex={barIndex}
         currentStepIndex={currentStepIndex}
         dom={{
           scrollEnabled: false,

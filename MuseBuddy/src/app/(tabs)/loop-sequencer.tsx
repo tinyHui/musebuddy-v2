@@ -1,13 +1,13 @@
 import { ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { RhythmTrainerView } from '@/components/rhythm-trainer';
+import { RhythmTrainer } from '@/components/rhythm-trainer';
 
 export default function LoopSequencerScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.content} contentInsetAdjustmentBehavior="automatic">
-        <RhythmTrainerView />
+        <RhythmTrainer />
       </ScrollView>
     </SafeAreaView>
   );
