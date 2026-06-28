@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
-import { RhythmViewer } from '@/components/rhythm-viewer';
 import { SequencerControls } from '@/components/rhythm-trainer/sequencer-controls';
+import { RhythmViewer } from '@/components/rhythm-trainer/rhythm-viewer';
 import type { SequencerPattern } from '@/components/rhythm-trainer/types';
 
 export type RhythmTrainerPageProps = {

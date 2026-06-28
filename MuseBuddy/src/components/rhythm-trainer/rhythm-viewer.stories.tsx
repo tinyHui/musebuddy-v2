@@ -40,7 +40,7 @@ const samplePattern = [
 ];
 
 const meta = {
-  title: 'Components/RhythmViewer',
+  title: 'Components/RhythmTrainer/RhythmViewer',
   component: RhythmViewer,
   args: {
     currentStepIndex: null,

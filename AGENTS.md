@@ -57,14 +57,27 @@ argument. A Metro reload is sufficient only for JavaScript/TypeScript changes.
 
 - `MuseBuddy/`: the Expo application and package-management root.
 - `MuseBuddy/src/app/`: Expo Router routes and layouts only.
+- `MuseBuddy/src/pages/`: route-level standalone screen components imported by thin
+  Expo Router route files.
 - `MuseBuddy/src/components/`: reusable React Native UI components.
+- `MuseBuddy/src/components/<component>/`: package-style folders for standalone
+  component packages and their private implementation files.
 - `MuseBuddy/src/hooks/`: shared React hooks.
 - `MuseBuddy/src/constants/`: themes, configuration, and shared constants.
 - `MuseBuddy/assets/`: images and other app assets.
 - `MuseBuddy/modules/`: local Expo native modules, including Swift/Core ML code.
 
-Keep business logic, types, and utilities outside `MuseBuddy/src/app/`. Inside the app,
-use the `@/` TypeScript alias for imports from `MuseBuddy/src/`.
+Keep business logic, types, and utilities outside `MuseBuddy/src/app/`. Expo Router
+files should stay thin: import a screen component from `MuseBuddy/src/pages/` and avoid
+co-locating feature code in route files. Use `MuseBuddy/src/pages/` for screen-level
+composition and `MuseBuddy/src/components/<component>/` for reusable standalone
+component packages. Keep component-specific hooks, constants, types, stories, and tests
+inside that component package. Promote code to `MuseBuddy/src/hooks/` or
+`MuseBuddy/src/constants/` only when it is shared across features.
+
+Inside the app, use the `@/` TypeScript alias for imports from `MuseBuddy/src/`. Prefer
+relative imports within a component package, and expose only stable public entrypoints
+from a package `index.ts`.
 
 Do not edit generated native projects as the source of truth. Native configuration should
 live in `MuseBuddy/app.json`, config plugins, or local Expo modules so it survives
@@ -110,7 +123,12 @@ pnpm --dir MuseBuddy <script>
 
 - Use strict TypeScript and avoid `any`.
 - Use functional React components and hooks.
-- Use kebab-case filenames.
+- Use kebab-case filenames and folders, for example `rhythm-trainer/`,
+  `rhythm-viewer.tsx`, and `use-sequencer-playback.ts`.
+- Use PascalCase for exported React components, for example `RhythmTrainer` and
+  `RhythmViewer`.
+- Use camelCase for functions, variables, and callbacks. React hooks must start with
+  `use`.
 - Keep platform-specific native behavior in the local Expo module behind typed TypeScript interfaces.
 - Keep UI simple, accessible, and responsive.
 - Handle permission denial, model-loading failures, recording failures, and transcription failures explicitly.

@@ -1,9 +1,9 @@
 import { StyleSheet, View } from 'react-native';
 
-import { BLOCK_COUNT, STEPS_PER_BLOCK } from './rhythm-trainer/constants';
-import { NoteBarViewer } from './rhythm-trainer/note-bar-viewer';
-import { RhythmBarViewer } from './rhythm-trainer/rhythm-bar-viewer';
-import type { SequencerPattern } from './rhythm-trainer/types';
+import { BLOCK_COUNT, STEPS_PER_BLOCK } from './constants';
+import { NoteBarViewer } from './note-bar-viewer';
+import { RhythmBarViewer } from './rhythm-bar-viewer';
+import type { SequencerPattern } from './types';
 
 type RhythmViewerProps = {
   currentStepIndex: number | null;
