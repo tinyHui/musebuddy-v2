@@ -36,7 +36,8 @@
     "react-native-webview": "13.16.1",
     "react-native-worklets": "0.8.3",
     "tamagui": "^2.4.0",
-    "vexflow": "^5.0.0"
+    "vexflow": "^5.0.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@storybook/addon-ondevice-actions": "^10.4.7",

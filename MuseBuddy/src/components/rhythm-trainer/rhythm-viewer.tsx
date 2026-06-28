@@ -7,13 +7,15 @@ import type { SequencerPattern } from './types';
 
 type RhythmViewerProps = {
   currentStepIndex: number | null;
-  onRegenerateBar: (barIndex: number) => void;
-  onShuffleBar: (barIndex: number) => void;
+  isBarActionsVisible?: boolean;
+  onRegenerateBar?: (barIndex: number) => void;
+  onShuffleBar?: (barIndex: number) => void;
   pattern: SequencerPattern;
 };
 
 export function RhythmViewer({
   currentStepIndex,
+  isBarActionsVisible = true,
   onRegenerateBar,
   onShuffleBar,
   pattern,
@@ -35,12 +37,13 @@ export function RhythmViewer({
           <View key={barIndex} style={styles.barGroup}>
             <RhythmBarViewer
               currentStepIndex={currentStepInBar}
+              isActionVisible={isBarActionsVisible}
               isPlayingBar={isPlayingBar}
               onRegenerate={() => {
-                onRegenerateBar(barIndex);
+                onRegenerateBar?.(barIndex);
               }}
               onShuffle={() => {
-                onShuffleBar(barIndex);
+                onShuffleBar?.(barIndex);
               }}
               steps={steps}
             />

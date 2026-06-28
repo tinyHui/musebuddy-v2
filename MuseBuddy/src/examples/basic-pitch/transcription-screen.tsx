@@ -1,7 +1,7 @@
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useTranscription } from '@/hooks/use-transcription';
+import { useTranscription } from './use-transcription';
 
 function formatElapsed(elapsedMs: number): string {
   const totalSeconds = Math.floor(elapsedMs / 1_000);

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useReducer } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { usePianoAttackDetector } from '@/hooks/use-piano-attack-detector';
+import { usePianoAttackDetector } from './use-piano-attack-detector';
 
 type AttackLogEntry = NonNullable<ReturnType<typeof usePianoAttackDetector>['lastAttack']>;
 

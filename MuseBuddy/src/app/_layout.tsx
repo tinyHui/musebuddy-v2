@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -13,6 +14,12 @@ if (!isStorybookEnabled) {
 }
 
 export default function RootLayout() {
+  useEffect(() => {
+    if (!isStorybookEnabled) {
+      void SplashScreen.hideAsync();
+    }
+  }, []);
+
   if (isStorybookEnabled) {
     return <StorybookUIRoot />;
   }

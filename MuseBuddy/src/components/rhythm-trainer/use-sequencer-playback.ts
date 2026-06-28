@@ -45,6 +45,11 @@ export function useSequencerPlayback({ bpm, pattern }: UseSequencerPlaybackOptio
     };
   }, [eighthNoteDurationMs, isPlaying]);
 
+  const stopPlayback = useCallback(() => {
+    setIsPlaying(false);
+    setCurrentStepIndex(null);
+  }, []);
+
   const togglePlayback = useCallback(() => {
     setIsPlaying((playing) => {
       const nextPlaying = !playing;
@@ -56,6 +61,7 @@ export function useSequencerPlayback({ bpm, pattern }: UseSequencerPlaybackOptio
   return {
     currentStepIndex,
     isPlaying,
+    stopPlayback,
     togglePlayback,
   };
 }

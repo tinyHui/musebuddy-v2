@@ -12,7 +12,7 @@ import {
   type RecordingArtifact,
   type RecordingProgress,
   type TranscriptionResult,
-} from '../../modules/basic-pitch';
+} from '../../../modules/basic-pitch';
 
 export type TranscriptionPhase =
   | 'loadingModel'

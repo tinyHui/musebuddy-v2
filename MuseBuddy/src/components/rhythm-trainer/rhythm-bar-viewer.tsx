@@ -8,14 +8,16 @@ const REST_COIN_SOURCE = require('@assets/images/coins/coin-back.png');
 
 type RhythmBarViewerProps = {
   currentStepIndex: number | null;
+  isActionVisible?: boolean;
   isPlayingBar: boolean;
-  onRegenerate: () => void;
-  onShuffle: () => void;
+  onRegenerate?: () => void;
+  onShuffle?: () => void;
   steps: readonly boolean[];
 };
 
 export function RhythmBarViewer({
   currentStepIndex,
+  isActionVisible = true,
   isPlayingBar,
   onRegenerate,
   onShuffle,
@@ -28,26 +30,28 @@ export function RhythmBarViewer({
     >
       <View style={styles.header}>
         <Text style={styles.label}>{isPlayingBar ? 'Playing bar' : 'Rhythm bar'}</Text>
-        <View style={styles.actionButtons}>
-          <Pressable
-            accessibilityLabel="Shuffle rhythm bar"
-            accessibilityRole="button"
-            hitSlop={8}
-            onPress={onShuffle}
-            style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}
-          >
-            <Ionicons name="shuffle-outline" size={16} color="#2f4f16" />
-          </Pressable>
-          <Pressable
-            accessibilityLabel="Regenerate rhythm bar"
-            accessibilityRole="button"
-            hitSlop={8}
-            onPress={onRegenerate}
-            style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}
-          >
-            <Ionicons name="refresh-outline" size={16} color="#2f4f16" />
-          </Pressable>
-        </View>
+        {isActionVisible && (
+          <View style={styles.actionButtons}>
+            <Pressable
+              accessibilityLabel="Shuffle rhythm bar"
+              accessibilityRole="button"
+              hitSlop={8}
+              onPress={onShuffle}
+              style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}
+            >
+              <Ionicons name="shuffle-outline" size={16} color="#2f4f16" />
+            </Pressable>
+            <Pressable
+              accessibilityLabel="Regenerate rhythm bar"
+              accessibilityRole="button"
+              hitSlop={8}
+              onPress={onRegenerate}
+              style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}
+            >
+              <Ionicons name="refresh-outline" size={16} color="#2f4f16" />
+            </Pressable>
+          </View>
+        )}
       </View>
 
       <View pointerEvents="none" style={styles.iconLayer}>
