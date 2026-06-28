@@ -1,13 +1,19 @@
 import { useRouter } from 'expo-router';
 
 import {
-  PlaceholderPanel,
-  PrimaryTrainingButton,
-  TrainingScreenShell,
-} from './training-screen-shell';
+  buildChordDisplay,
+  ChordKeyboardCard,
+  ChordNameCard,
+  ChordSheetCard,
+} from '@/components/chord-learning';
+import { dailyTrainingConfig } from '@/training/daily-training-config';
+
+import { PrimaryTrainingButton, TrainingScreenShell } from './training-screen-shell';
 
 export function ChordLearningPage() {
   const router = useRouter();
+  const chord = dailyTrainingConfig.chordLearning.chord;
+  const display = buildChordDisplay(chord);
 
   return (
     <TrainingScreenShell
@@ -23,11 +29,9 @@ export function ChordLearningPage() {
       subtitle="Get familiar with today's chord shape before adding movement."
       title="Chord learning"
     >
-      <PlaceholderPanel
-        accent="blue"
-        body="Chord learning placeholder. This screen will show today's configured chord exercise."
-        title="Today's chord"
-      />
+      <ChordNameCard display={display} explanation={chord.explanation} />
+      <ChordSheetCard display={display} />
+      <ChordKeyboardCard display={display} />
     </TrainingScreenShell>
   );
 }

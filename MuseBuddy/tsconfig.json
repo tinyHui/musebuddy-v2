@@ -8,7 +8,8 @@
     "strict": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@assets/*": ["./assets/*"]
+      "@assets/*": ["./assets/*"],
+      "@schema/*": ["./src/schema/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]

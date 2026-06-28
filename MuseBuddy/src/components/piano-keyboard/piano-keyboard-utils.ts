@@ -1,42 +1,16 @@
-export type CanonicalPianoKeyboardKeyName =
-  | 'C'
-  | 'C#'
-  | 'D'
-  | 'D#'
-  | 'E'
-  | 'F'
-  | 'F#'
-  | 'G'
-  | 'G#'
-  | 'A'
-  | 'A#'
-  | 'B';
+import {
+  normalizePianoKeyboardKey,
+  type CanonicalPianoKeyboardKeyName,
+  type PianoKeyboardKeyName,
+} from '@schema/music-theory-schema';
 
-export type PianoKeyboardKeyName = CanonicalPianoKeyboardKeyName | 'Db' | 'Eb' | 'Gb' | 'Ab' | 'Bb';
+export { normalizePianoKeyboardKey };
+export type { CanonicalPianoKeyboardKeyName, PianoKeyboardKeyName };
 
 export type PianoKeyboardMarker = {
   key: CanonicalPianoKeyboardKeyName;
   isRoot: boolean;
 };
-
-export function normalizePianoKeyboardKey(
-  key: PianoKeyboardKeyName,
-): CanonicalPianoKeyboardKeyName {
-  switch (key) {
-    case 'Db':
-      return 'C#';
-    case 'Eb':
-      return 'D#';
-    case 'Gb':
-      return 'F#';
-    case 'Ab':
-      return 'G#';
-    case 'Bb':
-      return 'A#';
-    default:
-      return key;
-  }
-}
 
 export function getPianoKeyboardMarkers(
   root: PianoKeyboardKeyName,
