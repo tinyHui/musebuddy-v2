@@ -66,6 +66,8 @@ argument. A Metro reload is sufficient only for JavaScript/TypeScript changes.
 - `MuseBuddy/src/constants/`: themes, configuration, and shared constants.
 - `MuseBuddy/assets/`: images and other app assets.
 - `MuseBuddy/modules/`: local Expo native modules, including Swift/Core ML code.
+- `courses/`: Python workspace for generating course-material dictionaries, separate
+  from the Expo app runtime. Reference to courses/README.md for details.
 
 Keep business logic, types, and utilities outside `MuseBuddy/src/app/`. Expo Router
 files should stay thin: import a screen component from `MuseBuddy/src/pages/` and avoid
