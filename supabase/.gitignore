@@ -1,0 +1,15 @@
+# Supabase local CLI state
+.branches/
+.temp/
+
+# Local environment files and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Edge Function secrets
+functions/.env
+functions/.env.*
+!functions/.env.example
+!functions/.env.*.example
